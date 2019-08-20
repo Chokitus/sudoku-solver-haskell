@@ -17,17 +17,30 @@ isFixed :: Cell -> Bool -- duh
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
+solve :: GameState (Maybe Table)
+solve = do
+    nextRun <- findFixPoint
+    let nextTable = currTable nextRun
+    case nextTable of
+        Nothing               -> return nothing
+        (Just a) | isSolved a -> return (Just a)
+        (Just a) | otherwise  ->
+            let (next1, next2) = splitTableAtMin a
+            solve1 <- solve next1
+            solve2 <- solve next2 -- Será que o lazyness cuida de só resolver o 2 se o 1 der nothing??
+            if isNothing solve1 then return solve2 else return solve1
+
 findFixPoint :: GameState (Maybe Table) -- aqui eu recomendo que olhe o artigo que te mandei antes de tentar entender
 findFixPoint = do
     config <- get
     let table = currTable config
     table' <- runTable table -- runTable altera o estado, por isso pode retornar que já tá atualizado
-    if table /= table then findFixPoint else return table' -- nothing == nothing, aí quem chamou se vira
+    if table /= table' then findFixPoint else return table' -- nothing == nothing, aí quem chamou se vira
 
 runTable :: Maybe Table -> GameState (Maybe Table)
 runTable Nothing  = return Nothing
 runTable table = do
-    let config = get
+    config <- get
     let (len, wid) = (rectLen config, rectWid config)
     let table' = checkForRects len wid $ checkForCols $ checkForRows table -- provavelmente o 3D só vai mexer aqui
     put ( config { currTable = table' } ) -- atualiza a tabela velha com a nova
@@ -44,7 +57,7 @@ checkForCols (Just table) = transpose <$> traverse checkRow (transpose table) --
 checkForRects :: Int -> Int -> Maybe Table -> Maybe Table -- esse é o corno que deu trabalho
 checkForRects _ _ Nothing = Nothing
 checkForRects len wid (Just table) = transposeRects len wid <$> traverse checkRow (transposeRects len wid table)
-    where transposeRects len wid table = concat $ transpose $ map (map concat . chunksOf wid) (transpose $ map (chunksOf len) table)
+    where transposeRects len wid table = concat $ transpose $ map (map concat . chunksOf wid) ( transpose <$> map (chunksOf len) table )
     -- esse transposeRects é uma ótima função pros testes de propriedade que ele pede: garantir que ele é sua própria inversa
 
 checkRow :: Row -> Maybe Row
@@ -54,13 +67,13 @@ checkRow row = traverse checkCells row -- por enquanto ta fazendo um passo só. 
         checkCells (FixedCell cell) = Just (FixedCell cell)
         checkCells (OpenCell cell) = case cell \\ fixeds row of -- se limpa dos vizinhos fixados
             []     -> Nothing -- nosso primeiro nothing, que vai propagar lá pra cima
-            [x] -> Just FixedCell x -- desejável, garante mais um passo antes de expandir dnv
+            [x]    -> Just FixedCell x -- desejável, garante mais um passo antes de expandir dnv
             xs     -> Just OpenCell xs
 
-splitTableAtMin :: Int -> Int -> Table -> Table
+splitTableAtMin :: Int -> Int -> Table -> (Table, Table)
 splitTableAtMin len wid table =
     let (index, cell, cell') = splitMinCell table -- descobre onde quebrar
-    in (replace index cell grid len wid, replace index cell' grid len wid) -- substitui a quebra
+    in (replace index cell table (len+wid), replace index cell' table (len+wid)) -- substitui a quebra
     where
         flatTable table = zip [0..] (concat table)
 
@@ -72,8 +85,10 @@ splitTableAtMin len wid table =
         splitCell (i, OpenCell [x,y]) = (i, FixedCell x, FixedCell y) -- ponto chave da busca em profundidade
         splitCell (i, OpenCell (x:xs)) = (i, FixedCell x, OpenCell xs)
 
-        --replace index cell grid len wid =
-        -- falta terminar, estou indo jantar. Nada aqui escrito foi compilado até agora, pode ta cheio de buraco.
-        -- toda a solução vai ta nesse arquivo (tem que renomear e adicionar o bloco Module lá em cima)
-        -- todo o IO vai ficar no Main.hs, que vai chamar esse.
-        -- Se quiser adiantando, faz as instâncias Read e Show, além do leitor e conversor
+        replace index cell table size = let idXY = (quot index 9, mod index 9) in
+            [[if (x,y) = idXY then cell else c | (row, x) <- zip table [0..] ] | (c, y) <- zip row [0..] ] -- espero que funcione
+
+isSolved :: Table -> Bool
+isSolved table = [] == filter (not.isFixed) (concat table)
+-- Falta fazer o IO agora, pra podermos começar a testar se deu certo.
+-- Podemos começar a pensar no 3D também
