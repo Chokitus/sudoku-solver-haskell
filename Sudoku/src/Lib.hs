@@ -1,12 +1,8 @@
-data Cell = FixedCell Int | OpenCell [Int]
-type Row = [Cell]
-type Table = [Row]
-data TableConfig = {currTable :: Table, rectLen :: Int, rectWid :: Int} -- nosso estado
-
 import Control.Monad.State.Lazy
 import Data.List.Split (chunksOf)
 import Data.List (transpose)
 import Data.Function (on)
+import SudokuCell
 
 type GameState = State TableConfig
 -- State TableConfig a :: TableConfig -> (a, TableConfig)
@@ -31,7 +27,7 @@ findFixPoint = do
 runTable :: Maybe Table -> GameState (Maybe Table)
 runTable Nothing  = return Nothing
 runTable table = do
-    let config <- get
+    let config = get
     let (len, wid) = (rectLen config, rectWid config)
     let table' = checkForRects len wid $ checkForCols $ checkForRows table -- provavelmente o 3D só vai mexer aqui
     put ( config { currTable = table' } ) -- atualiza a tabela velha com a nova
@@ -43,12 +39,12 @@ checkForRows (Just table) = traverse checkRow table
 
 checkForCols :: Maybe Table -> Maybe Table
 checkForCols Nothing = Nothing
-checkForCols (Just table) = fmap transpose $ traverse checkRow (transpose table) -- o último transpose é fmap pq tem um Maybe por fora
+checkForCols (Just table) = transpose <$> traverse checkRow (transpose table) -- o último transpose é fmap pq tem um Maybe por fora
 
 checkForRects :: Int -> Int -> Maybe Table -> Maybe Table -- esse é o corno que deu trabalho
 checkForRects _ _ Nothing = Nothing
-checkForRects len wid (Just table) = fmap (transposeRects len wid) $ traverse checkRow ((transposeRects len wid) table)
-    where transposeRects len wid table = concat $ transpose $ map (map concat) $ map (chunksOf wid) $ transpose $ map (chunksOf len) table
+checkForRects len wid (Just table) = transposeRects len wid <$> traverse checkRow (transposeRects len wid table)
+    where transposeRects len wid table = concat $ transpose $ map (map concat . chunksOf wid) (transpose $ map (chunksOf len) table)
     -- esse transposeRects é uma ótima função pros testes de propriedade que ele pede: garantir que ele é sua própria inversa
 
 checkRow :: Row -> Maybe Row
@@ -56,9 +52,9 @@ checkRow row = traverse checkCells row -- por enquanto ta fazendo um passo só. 
     where
         fixeds row = [cell | FixedCell cell <- row]
         checkCells (FixedCell cell) = Just (FixedCell cell)
-        checkCells (OpenCell cell) = case cell \\ (fixeds row) of -- se limpa dos vizinhos fixados
+        checkCells (OpenCell cell) = case cell \\ fixeds row of -- se limpa dos vizinhos fixados
             []     -> Nothing -- nosso primeiro nothing, que vai propagar lá pra cima
-            (x:[]) -> Just FixedCell x -- desejável, garante mais um passo antes de expandir dnv
+            [x] -> Just FixedCell x -- desejável, garante mais um passo antes de expandir dnv
             xs     -> Just OpenCell xs
 
 splitTableAtMin :: Int -> Int -> Table -> Table
@@ -76,7 +72,7 @@ splitTableAtMin len wid table =
         splitCell (i, OpenCell [x,y]) = (i, FixedCell x, FixedCell y) -- ponto chave da busca em profundidade
         splitCell (i, OpenCell (x:xs)) = (i, FixedCell x, OpenCell xs)
 
-        replace index cell grid len wid =
+        --replace index cell grid len wid =
         -- falta terminar, estou indo jantar. Nada aqui escrito foi compilado até agora, pode ta cheio de buraco.
         -- toda a solução vai ta nesse arquivo (tem que renomear e adicionar o bloco Module lá em cima)
         -- todo o IO vai ficar no Main.hs, que vai chamar esse.
