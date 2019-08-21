@@ -19,16 +19,16 @@ isFixed (OpenCell _) = False
 
 solve :: GameState (Maybe Table)
 solve = do
-    nextRun <- findFixPoint
-    let nextTable = currTable nextRun
-    case nextTable of
-        Nothing               -> return nothing
-        (Just a) | isSolved a -> return (Just a)
-        (Just a) | otherwise  ->
-            let (next1, next2) = splitTableAtMin a
-            solve1 <- solve next1
-            solve2 <- solve next2 -- Será que o lazyness cuida de só resolver o 2 se o 1 der nothing??
-            if isNothing solve1 then return solve2 else return solve1
+            nextRun <- findFixPoint
+            let nextTable = currTable nextRun
+            case nextTable of
+                Nothing               -> return nothing
+                (Just a) | isSolved a -> return (Just a)
+                (Just a) | otherwise  -> do
+                                            (next1, next2) <- splitTableAtMin a
+                                            solve1 <- solve next1
+                                            solve2 <- solve next2 -- Será que o lazyness cuida de só resolver o 2 se o 1 der nothing??
+                                            if isNothing solve1 then return solve2 else return solve1
 
 findFixPoint :: GameState (Maybe Table) -- aqui eu recomendo que olhe o artigo que te mandei antes de tentar entender
 findFixPoint = do
