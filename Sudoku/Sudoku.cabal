@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3676765f15cb80a81fa6f9bf2c40bc05ac28bdd81a382dfcfe207ef150123852
+-- hash: f9744502a55a17b1f00a22a44e9ff88dd27dbb8456d4bfb05733bd095641be97
 
 name:           Sudoku
 version:        0.1.0.0
@@ -28,12 +28,14 @@ source-repository head
 library
   exposed-modules:
       Lib
+      SudokuCell
   other-modules:
       Paths_Sudoku
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
+    , mtl
     , split >=0.2.2
   default-language: Haskell2010
 
@@ -47,6 +49,7 @@ executable Sudoku-exe
   build-depends:
       Sudoku
     , base >=4.7 && <5
+    , mtl
     , split >=0.2.2
   default-language: Haskell2010
 
@@ -61,5 +64,6 @@ test-suite Sudoku-test
   build-depends:
       Sudoku
     , base >=4.7 && <5
+    , mtl
     , split >=0.2.2
   default-language: Haskell2010

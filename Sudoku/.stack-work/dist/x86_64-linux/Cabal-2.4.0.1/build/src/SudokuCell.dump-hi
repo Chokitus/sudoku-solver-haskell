@@ -1,0 +1,460 @@
+
+==================== FINAL INTERFACE ====================
+2019-08-21 13:47:05.350726011 UTC
+
+interface Sudoku-0.1.0.0-3J02hvDBBMP6LnYstHCkQs:SudokuCell 8065
+  interface hash: b07539f29b993feb99678857d8fad08e
+  ABI hash: 7f21f43b721011abbd3b2a5c520c9e14
+  export-list hash: daae2f5beebf3bd54420673511ee4309
+  orphan hash: 81912d3a3c0920c9bd46e45d6320d43f
+  flag hash: d59a86fc39dabe8754ebbfb830e37f1e
+  opt_hash: 6faf2de08de32d19db9870899d88e59a
+  hpc_hash: 93b885adfe0da089cdf634904fd59f71
+  plugin_hash: ad164012d6b1e14942349d58b1132007
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  SudokuCell.newCell
+  SudokuCell.parseCell
+  SudokuCell.parseCellMap
+  SudokuCell.parseCellMapKey
+  SudokuCell.parseCellMapValue
+  SudokuCell.readCell
+  SudokuCell.readRow
+  SudokuCell.readTable
+  SudokuCell.showOpen
+  SudokuCell.showRow
+  SudokuCell.showRowOpen
+  SudokuCell.showTable
+  SudokuCell.showTableOpen
+  SudokuCell.Cell{SudokuCell.FixedCell SudokuCell.OpenCell}
+  SudokuCell.Row
+  SudokuCell.Table
+  SudokuCell.TableConfig{SudokuCell.TableConfig currTable rectLen rectWid}
+module dependencies:
+package dependencies: base-4.12.0.0* ghc-prim-0.5.3
+                      integer-gmp-1.0.2.0 split-0.2.3.3
+orphans: base-4.12.0.0:GHC.Float base-4.12.0.0:GHC.Base
+family instance modules: base-4.12.0.0:Control.Applicative
+                         base-4.12.0.0:Data.Functor.Const
+                         base-4.12.0.0:Data.Functor.Identity base-4.12.0.0:Data.Monoid
+                         base-4.12.0.0:Data.Semigroup.Internal base-4.12.0.0:GHC.Generics
+                         base-4.12.0.0:GHC.IO.Exception
+import  -/  base-4.12.0.0:Data.Char 74f67fe9150a102afa18766e840f6832
+import  -/  base-4.12.0.0:Data.Foldable efb37371da929e7bc88d896298d2d979
+import  -/  base-4.12.0.0:Data.List 17d0c71c557e42abe196f130788fd997
+import  -/  base-4.12.0.0:GHC.Base c00b75f0b052d05c55ba6a4dd1c63b26
+import  -/  base-4.12.0.0:GHC.List 4014a3c8a3b7c31c8325f6bcf1feea4a
+import  -/  base-4.12.0.0:GHC.Show 838a5d039379d82d9626aae53dfce276
+import  -/  base-4.12.0.0:Numeric 95e6b7cf46e583ba1a458eccafda2f97
+import  -/  base-4.12.0.0:Prelude 3c779dfd6448bdd8e234c336802c2acb
+import  -/  ghc-prim-0.5.3:GHC.Classes 0f6fd7d7db53fc48f6e1f01803cc6c9d
+import  -/  split-0.2.3.3:Data.List.Split 3518b4851dc357bd81ca9eb7a13694f0
+import  -/  split-0.2.3.3:Data.List.Split.Internals b4ab8dde94aedb7514b1f8d89c369cbe
+a96ed23df1780b286fea5be8c79a664a
+  $fShowCell :: GHC.Show.Show SudokuCell.Cell
+  DFunId
+  {- Strictness: m, Inline: CONLIKE,
+     Unfolding: DFun:.
+                  @ SudokuCell.Cell
+                  SudokuCell.$fShowCell_$cshowsPrec
+                  SudokuCell.$fShowCell_$cshow
+                  SudokuCell.$fShowCell_$cshowList -}
+f39aef06088c812332ab3c50039fcb2b
+  $fShowCell1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString#
+                   SudokuCell.$fShowCell2) -}
+88447fa01270221d52322a174e5bb807
+  $fShowCell2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("_"#) -}
+a96ed23df1780b286fea5be8c79a664a
+  $fShowCell_$cshow :: SudokuCell.Cell -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds2 :: SudokuCell.Cell) ->
+                 case ds2 of wild {
+                   SudokuCell.FixedCell a -> GHC.Show.$fShowInt_$cshow a
+                   SudokuCell.OpenCell ds3 -> SudokuCell.$fShowCell1 }) -}
+a96ed23df1780b286fea5be8c79a664a
+  $fShowCell_$cshowList :: [SudokuCell.Cell] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ls :: [SudokuCell.Cell]) (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ SudokuCell.Cell
+                   SudokuCell.$w$cshowsPrec
+                   ls
+                   s) -}
+a96ed23df1780b286fea5be8c79a664a
+  $fShowCell_$cshowsPrec ::
+    GHC.Types.Int -> SudokuCell.Cell -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>, Inline: [2],
+     Unfolding: InlineRule (3, True, True)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: SudokuCell.Cell)
+                   (w2 :: GHC.Base.String) ->
+                 SudokuCell.$w$cshowsPrec w1 w2) -}
+2dac1aadf4d188eb4e9143f6fb220e99
+  $sconcatMap :: (a -> [b]) -> [a] -> [b]
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,C(U)><S,1*U>,
+     Inline: (sat-args=2),
+     Unfolding: InlineRule (2, False, False)
+                (\ @ a @ b (f :: a -> [b]) (xs :: [a]) ->
+                 GHC.Base.build
+                   @ b
+                   (\ @ b1 (c :: b -> b1 -> b1)[OneShot] (n :: b1)[OneShot] ->
+                    GHC.Base.foldr
+                      @ a
+                      @ b1
+                      (\ (x :: a) (b2 :: b1)[OneShot] ->
+                       GHC.Base.foldr @ b @ b1 c b2 (f x))
+                      n
+                      xs)) -}
+e62fc783b92de4b9116fe760b6ecdb33
+  $tc'FixedCell :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   6588910776572346515##
+                   18418079036699032555##
+                   SudokuCell.$trModule
+                   SudokuCell.$tc'FixedCell2
+                   0#
+                   SudokuCell.$tc'FixedCell1) -}
+ae91f730d10089af7043720464ad254e
+  $tc'FixedCell1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+9559c5e3641349e3af912de3a954a785
+  $tc'FixedCell2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$tc'FixedCell3) -}
+4b356dcd2838b5c953d014cc021657e0
+  $tc'FixedCell3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'FixedCell"#) -}
+990519211ba6f6b1e9bf90bc6b09589a
+  $tc'OpenCell :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17488414542548043704##
+                   584592249504098629##
+                   SudokuCell.$trModule
+                   SudokuCell.$tc'OpenCell2
+                   0#
+                   SudokuCell.$tc'OpenCell1) -}
+43bb10a2cf9e946d517560b0966208d7
+  $tc'OpenCell1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+1b4b3acffe0fbc4e12c56a65548ea089
+  $tc'OpenCell2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$tc'OpenCell3) -}
+dfdf19d34dbcef04bc912db7937aa21d
+  $tc'OpenCell3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'OpenCell"#) -}
+582d6dd6d9e875941b2c5e0e65211280
+  $tc'TableConfig :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   5076832138266612399##
+                   2733571223979556667##
+                   SudokuCell.$trModule
+                   SudokuCell.$tc'TableConfig2
+                   0#
+                   SudokuCell.$tc'TableConfig1) -}
+57fd24340922a52a1d83e09675523f2c
+  $tc'TableConfig1 :: GHC.Types.KindRep
+  {- HasNoCafRefs, Strictness: m4, Inline: [~] -}
+9bfe9767fa49d58037c38def532a1f56
+  $tc'TableConfig2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$tc'TableConfig3) -}
+f4d6a65b9c2304d10b9f13ecfa42cb30
+  $tc'TableConfig3 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("'TableConfig"#) -}
+319622b86fcd22499903c8e1fca95eae
+  $tcCell :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13160187313159284845##
+                   11410605315734042299##
+                   SudokuCell.$trModule
+                   SudokuCell.$tcCell1
+                   0#
+                   GHC.Types.krep$*) -}
+454e73ce2c0de3de0231926400d5ed74
+  $tcCell1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$tcCell2) -}
+7567a33ef54220386acb8e7ab72017d9
+  $tcCell2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("Cell"#) -}
+f7207880de17688b1e9d74f245e0336d
+  $tcTableConfig :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17470144649450236951##
+                   16286297168439336630##
+                   SudokuCell.$trModule
+                   SudokuCell.$tcTableConfig1
+                   0#
+                   GHC.Types.krep$*) -}
+88fa5d8db10f9c3b8042b804327c6272
+  $tcTableConfig1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$tcTableConfig2) -}
+d4f209f4c424d816f90b0e93aa555e32
+  $tcTableConfig2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("TableConfig"#) -}
+48f39023ac00b07fca46560b703427f6
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   SudokuCell.$trModule3
+                   SudokuCell.$trModule1) -}
+12d1fde3c3477764fe5e8cbebcb4e667
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$trModule2) -}
+cfa39e7d400741adf055c94d30674018
+  $trModule2 :: GHC.Prim.Addr#
+  {- HasNoCafRefs, Unfolding: ("SudokuCell"#) -}
+d5a45697c5ad774cf7cabd5e459a7524
+  $trModule3 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS SudokuCell.$trModule4) -}
+cd502bf3aac42ddd44a6e894ee42b595
+  $trModule4 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("Sudoku-0.1.0.0-3J02hvDBBMP6LnYstHCkQs"#) -}
+a96ed23df1780b286fea5be8c79a664a
+  $w$cshowsPrec ::
+    SudokuCell.Cell -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 2, Strictness: <S,1*U><L,1*U>, Inline: [2],
+     Unfolding: (\ (w :: SudokuCell.Cell) (w1 :: GHC.Base.String) ->
+                 case w of wild {
+                   SudokuCell.FixedCell a
+                   -> case a of ww2 { GHC.Types.I# ww3 ->
+                      case GHC.Show.$wshowSignedInt
+                             0#
+                             ww3
+                             (GHC.Types.[] @ GHC.Types.Char) of ww4 { (#,#) ww5 ww6 ->
+                      GHC.Base.++_$s++ @ GHC.Types.Char w1 ww5 ww6 } }
+                   SudokuCell.OpenCell ds2
+                   -> GHC.Base.++ @ GHC.Types.Char SudokuCell.$fShowCell1 w1 }) -}
+baf90ef8607b3a3dffe14010a41466e2
+  $wparseCell :: GHC.Types.Char -> GHC.Prim.Int#
+  {- Arity: 1, Strictness: <L,U(U)>, Inline: [2],
+     Unfolding: (\ (w :: GHC.Types.Char) ->
+                 letrec {
+                   go :: [(GHC.Types.Char, GHC.Types.Int)] -> GHC.Prim.Int#
+                     <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                   = \ (ds2 :: [(GHC.Types.Char, GHC.Types.Int)]) ->
+                     case ds2 of wild {
+                       [] -> 0#
+                       : y ys
+                       -> case y of wild1 { (,) x y1 ->
+                          case x of wild2 { GHC.Types.C# x1 ->
+                          case w of wild3 { GHC.Types.C# y2 ->
+                          case GHC.Prim.eqChar# x1 y2 of lwild {
+                            DEFAULT -> go ys
+                            1# -> case y1 of ww { GHC.Types.I# ww1 -> ww1 } } } } } }
+                 } in
+                 go SudokuCell.parseCellMap) -}
+f358cce46986e48c0ca01f7c0d514ddc
+  $wreadCell :: GHC.Prim.Char# -> SudokuCell.Cell
+  {- Arity: 1, Strictness: <S,1*U>, Inline: [2],
+     Unfolding: (\ (ww :: GHC.Prim.Char#) ->
+                 case ww of wild {
+                   DEFAULT
+                   -> SudokuCell.FixedCell
+                        (letrec {
+                           go :: [(GHC.Types.Char, GHC.Types.Int)] -> GHC.Types.Int
+                             <join 1> {- Arity: 1, Strictness: <S,1*U> -}
+                           = \ (ds2 :: [(GHC.Types.Char, GHC.Types.Int)]) ->
+                             case ds2 of wild1 {
+                               [] -> SudokuCell.readCell1
+                               : y ys
+                               -> case y of wild2 { (,) x y1 ->
+                                  case x of wild3 { GHC.Types.C# x1 ->
+                                  case GHC.Prim.eqChar# x1 wild of lwild {
+                                    DEFAULT -> go ys 1# -> y1 } } } }
+                         } in
+                         go SudokuCell.parseCellMap)
+                   '0'# -> SudokuCell.newCell
+                   '_'# -> SudokuCell.newCell }) -}
+a96ed23df1780b286fea5be8c79a664a
+  data Cell = FixedCell GHC.Types.Int | OpenCell [GHC.Types.Int]
+6c7da9fa50fbb96a69818a0db1514c3f
+  type Row = [SudokuCell.Cell]
+d34ebfbc87dce5152392a9d81f8ce9cc
+  type Table = [SudokuCell.Row]
+5036cc725d6c00f38a7919a5568e55de
+  data TableConfig
+    = TableConfig {currTable :: SudokuCell.Table,
+                   rectLen :: GHC.Types.Int,
+                   rectWid :: GHC.Types.Int}
+5036cc725d6c00f38a7919a5568e55de
+  currTable :: SudokuCell.TableConfig -> SudokuCell.Table
+  RecSel Left SudokuCell.TableConfig
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds2 :: SudokuCell.TableConfig) ->
+                 case ds2 of wild { SudokuCell.TableConfig ds3 ds4 ds5 -> ds3 }) -}
+d9e3d67b083c667c6f073fee834ed79e
+  newCell :: SudokuCell.Cell
+  {- Strictness: m2,
+     Unfolding: (SudokuCell.OpenCell SudokuCell.newCell1) -}
+f612c1d1da79f303935a05e46711109b
+  newCell1 :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 1# 9#) -}
+7dd57e24672d45b6db12d467056da3f4
+  parseCell :: GHC.Types.Char -> GHC.Types.Int
+  {- Arity: 1, Strictness: <L,U(U)>m, Inline: [2],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Char) ->
+                 case SudokuCell.$wparseCell w of ww { DEFAULT ->
+                 GHC.Types.I# ww }) -}
+2d0e4dea4cb1f9d9c8981cfbac057e3c
+  parseCellMap :: [(GHC.Types.Char, GHC.Types.Int)]
+  {- Unfolding: (GHC.List.zip
+                   @ GHC.Types.Char
+                   @ GHC.Types.Int
+                   SudokuCell.parseCellMapKey
+                   SudokuCell.parseCellMapValue) -}
+103dbaec96fd08454e6853410b030528
+  parseCellMapKey :: GHC.Base.String
+  {- Unfolding: (GHC.CString.unpackCString#
+                   SudokuCell.parseCellMapKey1) -}
+b93c0a5fbaebb187966f75ff43903251
+  parseCellMapKey1 :: GHC.Prim.Addr#
+  {- HasNoCafRefs,
+     Unfolding: ("123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"#) -}
+77f484bc1823a0a653e5825d36cc61a1
+  parseCellMapValue :: [GHC.Types.Int]
+  {- Unfolding: (GHC.Enum.eftInt 1# 9223372036854775807#) -}
+a18f12dd28a42f6805a27715e8daed3d
+  readCell :: GHC.Types.Char -> SudokuCell.Cell
+  {- Arity: 1, Strictness: <S(S),1*U(1*U)>, Inline: [2],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: GHC.Types.Char) ->
+                 case w of ww { GHC.Types.C# ww1 -> SudokuCell.$wreadCell ww1 }) -}
+ece6a7fdfa5c163970c420c1dad04f81
+  readCell1 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
+94abc61cbf1075544551afbc3f9ac4b0
+  readRow :: GHC.Base.String -> SudokuCell.Row
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (xs :: GHC.Base.String) ->
+                 SudokuCell.readRow_go xs) -}
+de167268a58dfea1ee2cf79eb2b401eb
+  readRow_go :: [GHC.Types.Char] -> [SudokuCell.Cell]
+  {- Arity: 1, Strictness: <S,1*U> -}
+5f58f551e2a7cf7601c9284d69d588f9
+  readTable :: GHC.Base.String -> GHC.Types.Int -> SudokuCell.Table
+  {- Arity: 2, Strictness: <S,1*U><L,U(U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (stringdoku :: GHC.Base.String) (size :: GHC.Types.Int) ->
+                 GHC.Base.build
+                   @ [SudokuCell.Cell]
+                   (\ @ b1
+                      (c :: [SudokuCell.Cell] -> b1 -> b1)[OneShot]
+                      (n :: b1)[OneShot] ->
+                    GHC.Base.foldr
+                      @ [GHC.Types.Char]
+                      @ b1
+                      (GHC.Base.mapFB
+                         @ [SudokuCell.Cell]
+                         @ b1
+                         @ [GHC.Types.Char]
+                         c
+                         SudokuCell.readRow)
+                      n
+                      (Data.List.Split.Internals.chunksOf
+                         @ GHC.Types.Char
+                         size
+                         stringdoku))) -}
+5036cc725d6c00f38a7919a5568e55de
+  rectLen :: SudokuCell.TableConfig -> GHC.Types.Int
+  RecSel Left SudokuCell.TableConfig
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSL),1*U(A,1*U(U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds2 :: SudokuCell.TableConfig) ->
+                 case ds2 of wild { SudokuCell.TableConfig ds3 ds4 ds5 -> ds4 }) -}
+5036cc725d6c00f38a7919a5568e55de
+  rectWid :: SudokuCell.TableConfig -> GHC.Types.Int
+  RecSel Left SudokuCell.TableConfig
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLS),1*U(A,A,1*U(U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds2 :: SudokuCell.TableConfig) ->
+                 case ds2 of wild { SudokuCell.TableConfig ds3 ds4 ds5 -> ds5 }) -}
+279e61867e99b009301eb4c4ab2e9773
+  showOpen :: SudokuCell.Cell -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds2 :: SudokuCell.Cell) ->
+                 case ds2 of wild {
+                   SudokuCell.FixedCell a
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.showList__3
+                        (case a of ww { GHC.Types.I# ww1 ->
+                         case GHC.Show.$wshowSignedInt
+                                0#
+                                ww1
+                                SudokuCell.showOpen1 of ww2 { (#,#) ww3 ww4 ->
+                         GHC.Types.: @ GHC.Types.Char ww3 ww4 } })
+                   SudokuCell.OpenCell xs -> GHC.Show.$fShow[]_$s$cshow xs }) -}
+29e57d60328171b454e7baff967cb8d0
+  showOpen1 :: GHC.Base.String
+  {- Unfolding: (SudokuCell.showOpen_showl
+                   (GHC.Types.[] @ GHC.Types.Int)) -}
+fe49466fd6d2f13abf911261356d50e4
+  showOpen_showl :: [GHC.Types.Int] -> GHC.Base.String
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,1*U>m2 -}
+751d6b50e18c76f4cee70630f08b44ea
+  showRow :: SudokuCell.Row -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds2 :: [SudokuCell.Cell]) ->
+                 case ds2 of wild {
+                   [] -> GHC.Types.[] @ GHC.Types.Char
+                   : ipv ipv1 -> SudokuCell.showRow_go wild }) -}
+c1cf3e5a9301b65026fffae84f8fe339
+  showRowOpen :: SudokuCell.Row -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds2 :: [SudokuCell.Cell]) ->
+                 case ds2 of wild {
+                   [] -> GHC.Types.[] @ GHC.Types.Char
+                   : ipv ipv1 -> SudokuCell.showRowOpen_go wild }) -}
+0e49dcd3cf6f9dd273842cab9fa032ad
+  showRowOpen_go :: [SudokuCell.Cell] -> [GHC.Types.Char]
+  {- Arity: 1, Strictness: <S,1*U> -}
+450a0f9dfc6a415268552ad1c4d0339c
+  showRow_go :: [SudokuCell.Cell] -> [GHC.Types.Char]
+  {- Arity: 1, Strictness: <S,1*U> -}
+1bc5e6cdcc7963583cb0a30cd8c2e253
+  showTable :: SudokuCell.Table -> GHC.Base.String
+  {- Arity: 1,
+     Unfolding: (SudokuCell.$sconcatMap
+                   @ [SudokuCell.Cell]
+                   @ GHC.Types.Char
+                   SudokuCell.showRow) -}
+948cab442b867100e53cc839ff9d4ffa
+  showTableOpen :: SudokuCell.Table -> GHC.Base.String
+  {- Arity: 1,
+     Unfolding: (SudokuCell.$sconcatMap
+                   @ [SudokuCell.Cell]
+                   @ GHC.Types.Char
+                   SudokuCell.showRowOpen) -}
+instance [safe] GHC.Show.Show [SudokuCell.Cell]
+  = SudokuCell.$fShowCell
+"SPEC/SudokuCell concatMap @ [] _ _" [orphan] forall @ a
+                                                     @ b
+                                                     ($dFoldable :: Data.Foldable.Foldable [])
+  Data.Foldable.concatMap @ [] @ a @ b $dFoldable
+  = SudokuCell.$sconcatMap @ a @ b
+trusted: safe
+require own pkg trusted: False
+module header:
+  Nothing
+declaration docs:
+arg docs:
+

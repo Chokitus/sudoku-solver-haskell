@@ -1,5 +1,7 @@
-import Data.List.Split (chunksOf)
-import Data.List (find)
+module SudokuCell where
+
+import Data.List.Split
+import Data.List
 import Data.Char (ord, chr)
 import Numeric
 
@@ -49,7 +51,7 @@ showRowOpen xs = concatMap ((++ " ") . showOpen) xs ++ "\n"
 readRow :: String -> Row -- TODO
 readRow xs = [readCell cellChar | cellChar <- xs]
 
---mreadRowOpen :: String -> Row -- TODO -- Precisa? showRowOpen é estritamente de DEBUG
+-- readRowOpen :: String -> Row -- TODO -- Precisa? showRowOpen é estritamente de DEBUG
 -- ###################################################################################
 
 data TableConfig = TableConfig {currTable :: Table, rectLen :: Int, rectWid :: Int}
@@ -64,7 +66,7 @@ showTableOpen = concatMap showRowOpen
 --                         Largura 
 --           Stringdoku    da Linha
 readTable ::   String   ->   Int   -> Table
-readTable stringdoku width = map readRow $ chunksOf width stringdoku
+readTable stringdoku size = map readRow $ chunksOf size stringdoku
 
---readTableOpen :: String -> Table -- De novo, precisa?
+-- readTableOpen :: String -> Table -- De novo, precisa?
 
