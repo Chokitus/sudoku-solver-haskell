@@ -15,6 +15,11 @@ instance Show Cell where
     show (FixedCell a) = show a
     show (OpenCell _)  = "_"
 
+instance Eq Cell where
+  (FixedCell _) == (OpenCell _)  = False
+  (FixedCell a) == (FixedCell b) = a==b
+  (OpenCell a)  == (OpenCell b)  = a==b
+
 readCell :: String -> Cell
 readCell s | s == "_" || s == "0" = newCell
            |            otherwise = FixedCell (parseCell s)
@@ -61,7 +66,7 @@ showTable = concatMap showRow
 showTableOpen :: Table -> String
 showTableOpen = concatMap showRowOpen
 
---           Largura      
+--           Largura
 --           da Linha    Stringdoku
 readTable ::   Int   ->   String   -> Table
 readTable size stringdoku = map readRow $ chunksOf size $ words stringdoku
