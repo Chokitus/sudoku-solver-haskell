@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module SudokuCell where
 
@@ -10,7 +10,11 @@ module SudokuCell where
   import Numeric
   
   -- ###################### CELL #######################################################
-  data Cell = FixedCell Int | OpenCell [Int] deriving (Generic, NFData)
+  data Cell = FixedCell Int | OpenCell [Int] deriving (Generic)
+
+  instance NFData Cell where
+    rnf (FixedCell a) = a `deepseq` ()
+    rnf (OpenCell a)  = a `deepseq` ()
   
   newCell :: Int -> Cell
   newCell size = OpenCell [1..size] -- temos que definir quem são os nossos chars, e como informar.
@@ -20,6 +24,7 @@ module SudokuCell where
       show (OpenCell _)  = "_"
   
   instance Eq Cell where
+    (OpenCell _)  == (FixedCell _) = False
     (FixedCell _) == (OpenCell _)  = False
     (FixedCell a) == (FixedCell b) = a==b
     (OpenCell a)  == (OpenCell b)  = a==b
@@ -80,8 +85,4 @@ module SudokuCell where
   searchForLine i j [] = "Não encontrado"
   searchForLine i j (a:as) | i /= j = searchForLine i (j+1) as
   searchForLine i j (a:as) = a
-                        
-  -- loadBulkTable :: FilePath -> Int -> Int -> [IO Table]
-  -- loadBulkTable fp n width = readTable width.take n.lines <$> readFile fp
-  -- readTableOpen :: String -> Table -- De novo, precisa?
   -- ###################################################################################
