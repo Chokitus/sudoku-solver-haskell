@@ -18,8 +18,6 @@ type GameState = State TableConfig
 -- put x        (_, s) = ( () , x)
 -- return x     (_, s) = (x, s)
 
-
-
 isFixed :: Cell -> Bool -- duh
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
@@ -29,9 +27,10 @@ testTime = do
     sudokus <- fmap (fmap (readTable 9)) (take 100000 . lines <$> readFile "sudoku_puzzle.txt")
     t1 <- getCPUTime
     let solveds = map (\x -> solve x 3 3) sudokus
-    mapM_ (\x -> x `deepseq` printf "Computation time: %0.3f sec\n" (diff t1 getCPUTime)) solveds
+    t2 <- getCPUTime
+    mapM_ (\x -> x `deepseq` printf "Computation time: %0.3f sec\n" (diff t1 t2)) solveds
     return solveds
-        where diff t1 t2 = fromIntegral $ (t2 - t1) / (10^12) :: Int -> Int -> Double
+        where diff t1 t2 = (fromIntegral $ (t2 - t1) / (10^12)) :: Double
 
 solve :: Table -> Int -> Int -> Table
 solve table len wid = fromJust $ evalState solve' (TableConfig table len wid)
