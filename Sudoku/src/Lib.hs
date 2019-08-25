@@ -101,7 +101,7 @@ checkRow row = traverse checkCells row -- por enquanto ta fazendo um passo só. 
 splitTableAtMin :: Int -> Int -> Table -> (Table, Table)
 splitTableAtMin len wid table =
     let (index, cell, cell') = splitMinCell table -- descobre onde quebrar
-    in (replace index cell table (len+wid), replace index cell' table (len+wid)) -- substitui a quebra
+    in (replace index cell table (len*wid), replace index cell' table (len*wid)) -- substitui a quebra
     where
         flatTable table = zip [0..] (concat table)
 
@@ -113,7 +113,7 @@ splitTableAtMin len wid table =
         splitCell (i, OpenCell [x,y]) = (i, FixedCell x, FixedCell y) -- ponto chave da busca em profundidade
         splitCell (i, OpenCell (x:xs)) = (i, FixedCell x, OpenCell xs)
 
-        replace index cell table size = let idXY = (quot index 9, mod index 9) in
+        replace index cell table size = let idXY = (quot index size, mod index size) in
             [[if (x,y) == idXY then cell else c | (c, y) <- zip row [0..] ] | (row, x) <- zip table [0..]] -- espero que funcione
 
 isSolved :: Table -> Bool
