@@ -1,12 +1,16 @@
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+
 module SudokuCell where
 
   import Data.List.Split
   import Data.List
+  import GHC.Generics (Generic)
+  import Control.DeepSeq
   import Data.Char (ord, chr)
   import Numeric
   
   -- ###################### CELL #######################################################
-  data Cell = FixedCell Int | OpenCell [Int] -- TEREMOS QUE USAR CHAR EM VEZ DE INT SE QUISERMOS ALGO MAIOR QUE 9x9
+  data Cell = FixedCell Int | OpenCell [Int] deriving (Generic, NFData)
   
   newCell :: Int -> Cell
   newCell size = OpenCell [1..size] -- temos que definir quem são os nossos chars, e como informar.
