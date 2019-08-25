@@ -26,11 +26,13 @@ testTime' :: Int -> IO()
 testTime' num = do
     sudokus <- fmap (fmap (readTable 9)) (take num . lines <$> readFile "sudoku_puzzle.txt")
     t1 <- getCPUTime
+
     let solveds = map (\x -> solve x 3 3 `deepseq` solve x 3 3) sudokus `deepseq` "Todos os Sudokus foram resolvidos"
     putStrLn solveds
     t2 <- getCPUTime
     printf "Computation time total: %0.6f ms\n" (diff t1 t2)
         where diff t1 t2 = fromIntegral (t2 - t1) / (10^9) :: Double
+
 
 solve :: Table -> Int -> Int -> Table
 solve table len wid = fromJust $ evalState solve' (TableConfig table len wid)
@@ -92,6 +94,7 @@ splitTableAtMin :: Int -> Int -> Table -> (Table, Table)
 splitTableAtMin len wid table =
     let (index, cell, cell') = splitMinCell table -- descobre onde quebrar
     in (replace index cell table (len*wid), replace index cell' table (len*wid)) -- substitui a quebra
+
     where
         flatTable table = zip [0..] (concat table)
 
