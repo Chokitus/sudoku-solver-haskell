@@ -24,24 +24,14 @@ isFixed :: Cell -> Bool -- duh
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
--- testTime :: IO [Table]
--- testTime = do
---               sudokus <- fmap (fmap (readTable 9)) (take 100000 . lines <$> readFile "sudoku_puzzle.txt")
---               t1 <- getCPUTime
---               do
---                 sudoku <- sudokus
---                 let solved = solve sudoku 3 3
---                 t2 <- getCPUTime
---                 let diff = fromIntegral $ (t2 - t1) / (10^12)
---                 printf "Computation time: %0.3f sec\n" (diff :: Double)
---                 return sudokus
-
-testeeee :: String
-testeeee = do
-              sudokus <- fmap (fmap (\x -> solve x 3 3)) $ fmap (fmap (readTable 9)) $ take 100000 <$> lines <$> readFile "sudoku_puzzle.txt"
-              sudoku <- sudokus
-              let solved = solve sudoku 3 3
-              "Aaaa"
+testTime :: IO [Table]
+testTime = do
+    sudokus <- fmap (fmap (readTable 9)) (take 100000 . lines <$> readFile "sudoku_puzzle.txt")
+    t1 <- getCPUTime
+    let solveds = map (\x -> solve x 3 3) sudokus
+    mapM_ (\x -> x `deepseq` printf "Computation time: %0.3f sec\n" (diff t1 getCPUTime)) solveds
+    return solveds
+        where diff t1 t2 = fromIntegral $ (t2 - t1) / (10^12) :: Int -> Int -> Double
 
 solve :: Table -> Int -> Int -> Table
 solve table len wid = fromJust $ evalState solve' (TableConfig table len wid)
