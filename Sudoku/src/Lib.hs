@@ -18,7 +18,7 @@ type GameState = State TableConfig
 -- put x        (_, s) = ( () , x)
 -- return x     (_, s) = (x, s)
 
-isFixed :: Cell -> Bool -- duh
+isFixed :: Cell -> Bool
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
