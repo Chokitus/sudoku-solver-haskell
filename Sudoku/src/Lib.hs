@@ -22,20 +22,21 @@ isFixed :: Cell -> Bool -- duh
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
-testTime :: Int -> IO()
-testTime num = do
-    sudokus <- fmap (fmap (readTable 9)) (take num . lines <$> readFile "sudoku_puzzle.txt")
-    t1 <- getCPUTime
-    let solveds = map (\x -> solve x 3 3) sudokus
-    mapM_ (\x -> x `deepseq` (getCPUTime >>= (\t2->printf "Computation time parcial: %0.10f us\n" (diff t1 t2)))) solveds
-        where diff t1 t2 = fromIntegral (t2 - t1) / (10^6) :: Double
+-- testTime :: Int -> IO()
+-- testTime num = do
+--     sudokus <- fmap (fmap (readTable 9)) (take num . lines <$> readFile "sudoku_puzzle.txt")
+--     t1 <- getCPUTime
+--     let solveds = map (\x -> solve x 3 3) sudokus
+--     mapM_ (\x -> x `deepseq` (getCPUTime >>= (\t2->printf "Computation time parcial: %0.10f us\n" (diff t1 t2)))) solveds
+--         where diff t1 t2 = fromIntegral (t2 - t1) / (10^6) :: Double
 
 testTime' :: Int -> IO()
 testTime' num = do
     sudokus <- fmap (fmap (readTable 9)) (take num . lines <$> readFile "sudoku_puzzle.txt")
     t1 <- getCPUTime
     let solveds = map (\x -> solve x 3 3) sudokus
-    mapM_ (\x -> x `deepseq` x) solveds
+    let aaaa = mapM_ (\x -> x `deepseq` x) solveds
+    mapM_ (putStrLn.showTable) solveds
     t2 <- getCPUTime
     printf "Computation time total: %0.10f us\n" (diff t1 t2)
         where diff t1 t2 = fromIntegral (t2 - t1) / (10^6) :: Double
@@ -99,7 +100,7 @@ checkRow row = traverse checkCells row -- por enquanto ta fazendo um passo só. 
 splitTableAtMin :: Int -> Int -> Table -> (Table, Table)
 splitTableAtMin len wid table =
     let (index, cell, cell') = splitMinCell table -- descobre onde quebrar
-    in (replace index cell table (len+wid), replace index cell' table (len*wid)) -- substitui a quebra
+    in (replace index cell table (len+wid), replace index cell' table 9) -- substitui a quebra
     where
         flatTable table = zip [0..] (concat table)
 
