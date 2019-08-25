@@ -85,8 +85,4 @@ module SudokuCell where
   searchForLine i j [] = "Não encontrado"
   searchForLine i j (a:as) | i /= j = searchForLine i (j+1) as
   searchForLine i j (a:as) = a
-                        
-  -- loadBulkTable :: FilePath -> Int -> Int -> [IO Table]
-  -- loadBulkTable fp n width = readTable width.take n.lines <$> readFile fp
-  -- readTableOpen :: String -> Table -- De novo, precisa?
   -- ###################################################################################
