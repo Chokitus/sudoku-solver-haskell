@@ -1,10 +1,13 @@
 module Lib where
 
 import Control.Monad.State.Lazy
+import Control.DeepSeq 
 import Data.List.Split (chunksOf)
 import Data.List
 import Data.Maybe
+import Text.Printf
 import Data.Function (on)
+import System.CPUTime
 import SudokuCell
 
 type GameState = State TableConfig
@@ -16,12 +19,32 @@ type GameState = State TableConfig
 -- return x     (_, s) = (x, s)
 
 
+
 isFixed :: Cell -> Bool -- duh
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
-solve :: Table -> Int -> Int -> Maybe Table
-solve table len wid = evalState solve' (TableConfig table len wid)
+-- testTime :: IO [Table]
+-- testTime = do
+--               sudokus <- fmap (fmap (readTable 9)) (take 100000 . lines <$> readFile "sudoku_puzzle.txt")
+--               t1 <- getCPUTime
+--               do
+--                 sudoku <- sudokus
+--                 let solved = solve sudoku 3 3
+--                 t2 <- getCPUTime
+--                 let diff = fromIntegral $ (t2 - t1) / (10^12)
+--                 printf "Computation time: %0.3f sec\n" (diff :: Double)
+--                 return sudokus
+
+testeeee :: String
+testeeee = do
+              sudokus <- fmap (fmap (\x -> solve x 3 3)) $ fmap (fmap (readTable 9)) $ take 100000 <$> lines <$> readFile "sudoku_puzzle.txt"
+              sudoku <- sudokus
+              let solved = solve sudoku 3 3
+              "Aaaa"
+
+solve :: Table -> Int -> Int -> Table
+solve table len wid = fromJust $ evalState solve' (TableConfig table len wid)
 
 solve' ::  GameState (Maybe Table)
 solve' = do
@@ -42,7 +65,7 @@ findFixPoint = do
     config <- get
     let table = currTable config
     table' <- runTable -- runTable altera o estado, por isso pode retornar que já tá atualizado
-    if table' /= (Just table) then findFixPoint else return table'
+    if isJust table' && table' /= Just table then findFixPoint else return table'
 
 runTable :: GameState (Maybe Table)
 runTable = do
