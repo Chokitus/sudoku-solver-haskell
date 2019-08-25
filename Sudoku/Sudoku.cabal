@@ -37,6 +37,7 @@ library
       base >=4.7 && <5
     , mtl
     , split >=0.2.2
+    , deepseq
   default-language: Haskell2010
 
 executable Sudoku-exe
@@ -51,6 +52,7 @@ executable Sudoku-exe
     , base >=4.7 && <5
     , mtl
     , split >=0.2.2
+    , deepseq
   default-language: Haskell2010
 
 test-suite Sudoku-test
@@ -66,4 +68,7 @@ test-suite Sudoku-test
     , base >=4.7 && <5
     , mtl
     , split >=0.2.2
+    , deepseq
+    , tasty
+    , tasty-hunit
   default-language: Haskell2010

@@ -1,4 +1,4 @@
-module Lib where
+module Lib  where
 
 import Control.Monad.State.Lazy
 import Control.DeepSeq 

@@ -30,7 +30,7 @@ module SudokuCell where
     (OpenCell a)  == (OpenCell b)  = a==b
   
   readCell :: String -> Cell
-  readCell s | s == "_" || s == "0" = OpenCell [1,2]
+  readCell s | s == "_" || s == "0" = OpenCell []
              |            otherwise = FixedCell (parseCell s)
   
   showOpen :: Cell -> String

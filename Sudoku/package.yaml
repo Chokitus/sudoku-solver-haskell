@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - split >= 0.2.2
 - mtl
+- deepseq
 
 library:
   source-dirs: src
@@ -37,6 +38,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - Sudoku
+    - deepseq
+    - mtl
+    - split
 
 tests:
   Sudoku-test:
@@ -48,3 +52,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - Sudoku
+    - tasty
+    - tasty-hunit

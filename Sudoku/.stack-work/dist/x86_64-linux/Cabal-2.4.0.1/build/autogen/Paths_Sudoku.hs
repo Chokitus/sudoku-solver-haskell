@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/bin"
-libdir     = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/lib/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0-3J02hvDBBMP6LnYstHCkQs"
-dynlibdir  = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/lib/x86_64-linux-ghc-8.6.5"
-datadir    = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/share/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
-libexecdir = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/libexec/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
-sysconfdir = "/home/ufabc/\193rea de Trabalho/Pasta sem t\237tulo/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/lts-14.1/8.6.5/etc"
+bindir     = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/bin"
+libdir     = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/lib/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0-Grwe0TSt85KCx990v2mwWc"
+dynlibdir  = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/lib/x86_64-linux-ghc-8.6.5"
+datadir    = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/share/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
+libexecdir = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/libexec/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
+sysconfdir = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "Sudoku_bindir") (\_ -> return bindir)
