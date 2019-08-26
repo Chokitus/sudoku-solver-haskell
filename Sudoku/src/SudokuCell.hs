@@ -12,12 +12,12 @@ module SudokuCell where
   -- ###################### CELL #######################################################
   data Cell = FixedCell Int | OpenCell [Int] deriving (Generic)
 
-  instance NFData Cell where
+  instance NFData Cell where -- necessário para o deepseq, porque queremos em testTime forçar resolução para medir seu tempo
     rnf (FixedCell a) = a `deepseq` ()
     rnf (OpenCell a)  = a `deepseq` ()
   
   newCell :: Int -> Cell
-  newCell size = OpenCell [1..size] -- temos que definir quem são os nossos chars, e como informar.
+  newCell size = OpenCell [1..size]
   
   instance Show Cell where
       show (FixedCell a) = show a
@@ -30,7 +30,7 @@ module SudokuCell where
     (OpenCell a)  == (OpenCell b)  = a==b
   
   readCell :: String -> Cell
-  readCell s | s == "_" || s == "0" = OpenCell []
+  readCell s | s == "_" || s == "0" = OpenCell [] -- OpenCells são criadas vazias e trocadas depois por newCell pelo resetCell
              |            otherwise = FixedCell (parseCell s)
   
   showOpen :: Cell -> String
@@ -43,18 +43,17 @@ module SudokuCell where
   -- ###################### ROW ########################################################
   type Row = [Cell]
   
-  showRow :: Row -> String
+  showRow :: Row -> String 
   showRow [] = ""
   showRow xs = concatMap ((++ " ") . show) xs ++ "\n"
   
-  showRowOpen :: Row -> String
+  showRowOpen :: Row -> String -- mais utilizado para debug, temos uma versão open de cada Show, onde as OpenCells são também impressas
   showRowOpen [] = ""
   showRowOpen xs = concatMap ((++ " ") . showOpen) xs ++ "\n"
   
   readRow :: [String] -> Row -- TODO
   readRow xs = [readCell cellString | cellString <- xs]
   
-  -- readRowOpen :: String -> Row -- TODO -- Precisa? showRowOpen é estritamente de DEBUG
   -- ###################################################################################
   
   data TableConfig = TableConfig {currTable :: Table, rectLen :: Int, rectWid :: Int}
@@ -67,9 +66,9 @@ module SudokuCell where
   showTableOpen = concatMap showRowOpen
   
   resetOpens :: Int -> Table -> Table
-  resetOpens size = map (map (resetCell size))
+  resetOpens size = map (map (resetCell size)) -- troca todas as openCells do tabuleiro
   
-  resetCell :: Int -> Cell -> Cell
+  resetCell :: Int -> Cell -> Cell -- troca uma openCell qualquer por uma completa
   resetCell size (FixedCell a) = FixedCell a
   resetCell size _ = newCell size
   
