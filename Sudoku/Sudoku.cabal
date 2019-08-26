@@ -27,7 +27,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      SudokuLib
       SudokuCell
   other-modules:
       Paths_Sudoku

@@ -1,4 +1,4 @@
-module Lib  where
+module SudokuLib  where
 
 import Control.Monad.State.Lazy
 import Control.DeepSeq 

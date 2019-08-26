@@ -1,7 +1,7 @@
 module Main where
 
 import SudokuCell
-import Lib
+import SudokuLib
 import Test.Tasty
 import Test.Tasty.HUnit 
 

@@ -11,10 +11,10 @@
   size: 9
   modtime: 1566261623
 /home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/app/Main.hs:
-  hash: eb67f9871a7359d9bc62b3bdf0cbc6c070eb720cf9081e145707d2a9cde75c17
-  size: 2306
-  modtime: 1566784821
+  hash: 4801a31b83e97764558f8511669f339868cb89e0d5c92cb36a3d86225264dba5
+  size: 2604
+  modtime: 1566786153
 /home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/Sudoku.cabal:
-  hash: e306c7f47ef10cd125774cae9b70d58f7257eef3b1d1023f05dd5af1848fcb3b
-  size: 1655
-  modtime: 1566764464
+  hash: cedfb2d07e95412d5bc0e29db9975d70afee8b9b3a8470114c803cdd68d12880
+  size: 1661
+  modtime: 1566786104

@@ -1,7 +1,8 @@
 module Main where
 
 import SudokuCell
-import Lib
+import SudokuLib
+import Data.Char
 
 main :: IO ()
 main = do
@@ -13,7 +14,8 @@ solveSudoku = do
     config <- waitForAnswer "Insira as dimensões do quadrado interno" isConfigValid "Use o formato \"m x n\""
     let (len, wid) = parseConfig config
     sudoku <- waitForAnswer "Insira um stringdoku com espaços" (isSudokuValid len wid) "Tente novamente"
-    let solved = solve sudoku len wid
+    let table = readTable ((fromInteger len :: Int)*(fromInteger wid :: Int)) sudoku
+    let solved = solve table (fromInteger len :: Int) (fromInteger wid :: Int)
     printSolved solved
     main -- chama main para voltar pro menu
       where
@@ -21,18 +23,18 @@ solveSudoku = do
           isConfigValid _                  = False
           parseConfig [m,' ','x',' ', n] = (read [m] :: Integer, read [n] :: Integer)
           parseConfig _                  = error "?"
-          isSudokuValid len wid s = length (words s) == (len*wid)**2 && all (\x -> let x' = read x in x>0 && x<=(len*wid)) (words s)
+          isSudokuValid len wid s = True--length (words s) == ((fromInteger len :: Int)*(fromInteger wid :: Int))**2 && all (\x -> let x' = read x in x>0 && x<=(len*wid)) (words s)
           printSolved solved = putStrLn $ showTable solved-- imprime resolvido (PRECISO DE VOCÊ NESSE)
 
 solveFile :: IO ()
 solveFile = do
     config <- waitForAnswer "Insira as dimensões do quadrado interno e quantos sudokus possui o arquivo" isConfigValid "Use o formato \"m x n, x\""
     let (len,wid,num) = parseConfig config
-    file <- waitForAnswer "Insira o nome do arquivo" (isFileValid len wid) "Arquivo inválido ou inexistente"
-    testTime num len wid file
+    file <- waitForAnswer "Insira o nome do arquivo" (isFileValid (fromInteger len :: Int) (fromInteger wid :: Int)) "Arquivo inválido ou inexistente"
+    testTime (fromInteger num :: Int) (fromInteger len :: Int) (fromInteger wid :: Int) file
     main -- chama main para voltar pro menu
       where
-        isConfigValid [m,' ','x',' ',n,',',' ',x] = isDigit m && isDigit n && all isDigit x
+        isConfigValid [m,' ','x',' ',n,',',' ',x] = isDigit m && isDigit n && isDigit x
         isConfigValid _                         = False
         parseConfig [m,' ','x',' ', n, ',', ' ', x] = (read [m] :: Integer, read [n] :: Integer, read [m] :: Integer)
         parseConfig _                               = error "?"
