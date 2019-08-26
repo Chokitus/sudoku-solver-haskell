@@ -23,22 +23,25 @@ solveSudoku = do
           isConfigValid _                  = False
           parseConfig [m,' ','x',' ', n] = (read [m] :: Integer, read [n] :: Integer)
           parseConfig _                  = error "?"
-          isSudokuValid len wid s = True--length (words s) == ((fromInteger len :: Int)*(fromInteger wid :: Int))**2 && all (\x -> let x' = read x in x>0 && x<=(len*wid)) (words s)
-          printSolved solved = putStrLn $ showTable solved-- imprime resolvido (PRECISO DE VOCÊ NESSE)
+          isSudokuValid len wid s = True
+          printSolved solved = putStrLn $ showTable solved
 
 solveFile :: IO ()
 solveFile = do
-    config <- waitForAnswer "Insira as dimensões do quadrado interno e quantos sudokus possui o arquivo" isConfigValid "Use o formato \"m x n, x\""
-    let (len,wid,num) = parseConfig config
+    config <- waitForAnswer "Insira as dimensões do quadrado interno" isConfigValid "Use o formato \"m x n\""
+    let (len,wid) = parseConfig config
+    nums <- waitForAnswer "Insira quantos sudokus possui o arquivo" (all isDigit) "Insira valor numerico"
+    let num = read nums :: Int
     file <- waitForAnswer "Insira o nome do arquivo" (isFileValid (fromInteger len :: Int) (fromInteger wid :: Int)) "Arquivo inválido ou inexistente"
-    testTime (fromInteger num :: Int) (fromInteger len :: Int) (fromInteger wid :: Int) file
+    
+    testTime num (fromInteger len :: Int) (fromInteger wid :: Int) file
     main -- chama main para voltar pro menu
       where
-        isConfigValid [m,' ','x',' ',n,',',' ',x] = isDigit m && isDigit n && isDigit x
+        isConfigValid [m,' ','x',' ',n] = isDigit m && isDigit n
         isConfigValid _                         = False
-        parseConfig [m,' ','x',' ', n, ',', ' ', x] = (read [m] :: Integer, read [n] :: Integer, read [m] :: Integer)
+        parseConfig [m,' ','x',' ', n] = (read [m] :: Integer, read [n] :: Integer)
         parseConfig _                               = error "?"
-        isFileValid _ _ _ = True -- sei lá oq faríamos aqui (PRECISO DE VOCÊ NESSE)
+        isFileValid _ _ _ = True
 
 waitForAnswer :: String -> (String -> Bool) -> String -> IO String
 waitForAnswer question verify reject = do
