@@ -22,69 +22,68 @@ isFixed :: Cell -> Bool
 isFixed (FixedCell _) = True
 isFixed (OpenCell _) = False
 
-testTime' :: Int -> IO()
-testTime' num = do
-    sudokus <- fmap (fmap (readTable 9)) (take num . lines <$> readFile "sudoku_puzzle.txt")
+testTime :: Int -> Int -> Int -> FilePath -> IO()
+testTime num len wid filepath = do -- resolve os primeiros "num" sudokus de quadrado interno "len x wid" em "filepath"
+    sudokus <- fmap (fmap (readTable (len*wid))) (take num . lines <$> readFile filepath) -- extrai os sudokus
     t1 <- getCPUTime
-
-    let solveds = map (\x -> solve x 3 3 `deepseq` solve x 3 3) sudokus `deepseq` "Todos os Sudokus foram resolvidos"
-    putStrLn solveds
+    let solveds = map (\x -> solve x len wid) sudokus `deepseq` "Todos os Sudokus foram resolvidos" -- força a resolução quando solveds for calculado
+    putStrLn solveds -- usa o solveds, resolvendo assim os sudokus
     t2 <- getCPUTime
-    printf "Computation time total: %0.6f ms\n" (diff t1 t2)
+    printf "Computation time total: %0.6f ms\n" (diff t1 t2) -- calcula o tempo de solução dos "num" sudokus
         where diff t1 t2 = fromIntegral (t2 - t1) / (10^9) :: Double
+-- para sudokus de quadrado interno 3x3 (os 9x9 usuais), temos em média 12ms por sudoku sem a otimização "-o2"
 
-
-solve :: Table -> Int -> Int -> Table
+solve :: Table -> Int -> Int -> Table -- invoca a solução monádica dos sudokus
 solve table len wid = fromJust $ evalState solve' (TableConfig table len wid)
 
 solve' ::  GameState (Maybe Table)
 solve' = do
-    currState <- get
-    let (len, wid) = (rectLen currState, rectWid currState)
-    nextTable <- findFixPoint
+    currState <- get -- pega a config atual
+    let (len, wid) = (rectLen currState, rectWid currState) -- extrai suas medidas
+    nextTable <- findFixPoint -- tenta resolver até não poder mais
     case nextTable of
-        Nothing               -> return Nothing
-        (Just a) | isSolved a -> return (Just a)
+        Nothing               -> return Nothing -- se chegou em um impasse, sudoku impossível, retorna Nothing
+        (Just a) | isSolved a -> return (Just a) -- se resolveu o sudoku, retorne-o
         (Just a)  -> do
-            let (next1, next2) = splitTableAtMin len wid a
-            put ( currState { currTable = next1 } )
+            let (next1, next2) = splitTableAtMin len wid a -- se não resolveu, inicie uma busca em profundidade
+            put ( currState { currTable = next1 } ) -- guarde a primeira ramificação no config e tente resolver ela
             solve1 <- solve'
-            if isJust solve1 then return solve1 else put ( currState { currTable = next2 } ) >> solve'
+            if isJust solve1 then return solve1 else put ( currState { currTable = next2 } ) >> solve' -- se der Nothing, guarde e tente a segunda
 
-findFixPoint :: GameState (Maybe Table) -- aqui eu recomendo que olhe o artigo que te mandei antes de tentar entender
+findFixPoint :: GameState (Maybe Table) -- procura resolver até não poder mais
 findFixPoint = do
     config <- get
-    let table = currTable config
+    let table = currTable config -- extrai a tabela atual
     table' <- runTable -- runTable altera o estado, por isso pode retornar que já tá atualizado
-    if isJust table' && table' /= Just table then findFixPoint else return table'
+    if isJust table' && table' /= Just table then findFixPoint else return table' -- se houve mudança, então retorna, senão, entra em recursão
 
-runTable :: GameState (Maybe Table)
+runTable :: GameState (Maybe Table) -- realiza uma etapa de solução
 runTable = do
     config <- get
-    let (len, wid, table) = (rectLen config, rectWid config, currTable config)
-    let table' = checkForRects len wid . checkForCols . checkForRows $ Just table -- provavelmente o 3D só vai mexer aqui
+    let (len, wid, table) = (rectLen config, rectWid config, currTable config) -- extrai o estado de config
+    let table' = checkForRects len wid . checkForCols . checkForRows $ Just table -- provavelmente uma versão 3D só precisaria mexer aqui
     put ( config { currTable = fromMaybe table table' } ) -- atualiza a tabela velha com a nova
-    return table' -- devolve como parâmetro. Se não quisesse comparar, poderia ter sido return ()
+    return table' -- retorna a tabela corrigida para ser comparada
 
-checkForRows :: Maybe Table -> Maybe Table -- traverse f x nada mais é que (sequence $ map f x)
+checkForRows :: Maybe Table -> Maybe Table -- limpa linhas da tabela. 
 checkForRows Nothing = Nothing
 checkForRows (Just table) = traverse checkRow table
 
-checkForCols :: Maybe Table -> Maybe Table
+checkForCols :: Maybe Table -> Maybe Table -- transforma colunas em linhas, limpa, e transforma em colunas novamente
 checkForCols Nothing = Nothing
 checkForCols (Just table) = transpose <$> traverse checkRow (transpose table) -- o último transpose é fmap pq tem um Maybe por fora
 
-checkForRects :: Int -> Int -> Maybe Table -> Maybe Table -- esse é o corno que deu trabalho
+checkForRects :: Int -> Int -> Maybe Table -> Maybe Table -- transforma os quadrados internos "len x wid" em linhas, limpa, e transforma em quadrados novamente
 checkForRects _ _ Nothing = Nothing
 checkForRects len wid (Just table) = transposeRects len wid <$> traverse checkRow (transposeRects len wid table)
     where transposeRects len wid table = concat $ transpose $ map (map concat . chunksOf wid) ( transpose <$> map (chunksOf len) table )
-    -- esse transposeRects é uma ótima função pros testes de propriedade que ele pede: garantir que ele é sua própria inversa
+    -- o truque é que essa transformação é sua própria inversa
 
-checkRow :: Row -> Maybe Row
-checkRow row = traverse checkCells row -- por enquanto ta fazendo um passo só. Logo implemento o segundo
+checkRow :: Row -> Maybe Row -- unidade central de resolução, qualquer implementação mais profunda mexeria aqui, como procurar por pares e triplas
+checkRow row = traverse checkCells row 
     where
-        fixeds row = [cell | FixedCell cell <- row]
-        checkCells (FixedCell cell) = Just (FixedCell cell)
+        fixeds row = [cell | FixedCell cell <- row] -- descobre as células já fixadas dessa linha
+        checkCells (FixedCell cell) = Just (FixedCell cell) -- células fixadas já estão limpas
         checkCells (OpenCell cell) = case cell \\ fixeds row of -- se limpa dos vizinhos fixados
             []     -> Nothing -- nosso primeiro nothing, que vai propagar lá pra cima
             [x]    -> Just (FixedCell x) -- desejável, garante mais um passo antes de expandir dnv
@@ -96,20 +95,18 @@ splitTableAtMin len wid table =
     in (replace index cell table (len*wid), replace index cell' table (len*wid)) -- substitui a quebra
 
     where
-        flatTable table = zip [0..] (concat table)
+        flatTable table = zip [0..] (concat table) --lineariza a tabela
 
         splitMinCell table = splitCell $ minCell table
-        minCell table = minimumBy (compare `on` (cellSize.snd)) $ filter (not.isFixed.snd) $ flatTable table -- ODEIO USAR (compare `on` x)
+        minCell table = minimumBy (compare `on` (cellSize.snd)) $ filter (not.isFixed.snd) $ flatTable table -- procura a OpenCell com menos possibilidades
         cellSize (FixedCell _) = 1
         cellSize (OpenCell xs) = length xs
-        splitCell (i, FixedCell _) = error "?" -- compilador pede, fazer oq...
-        splitCell (i, OpenCell [x,y]) = (i, FixedCell x, FixedCell y) -- ponto chave da busca em profundidade
-        splitCell (i, OpenCell (x:xs)) = (i, FixedCell x, OpenCell xs)
+        splitCell (i, FixedCell _) = error "?" -- células já fixas não são expansíveis
+        splitCell (i, OpenCell [x,y]) = (i, FixedCell x, FixedCell y) -- ponto chave da busca em profundidade, fixa a primeira possibilidade e tenta resolver
+        splitCell (i, OpenCell (x:xs)) = (i, FixedCell x, OpenCell xs) -- pode ter mais que uma possibilidade restante, e essa célula pode expandir novamente em outra busca
 
         replace index cell table size = let idXY = (quot index size, mod index size) in
-            [[if (x,y) == idXY then cell else c | (c, y) <- zip row [0..] ] | (row, x) <- zip table [0..]] -- espero que funcione
+            [[if (x,y) == idXY then cell else c | (c, y) <- zip row [0..] ] | (row, x) <- zip table [0..]] -- substitui uma célula alvo no tabuleiro
 
-isSolved :: Table -> Bool
+isSolved :: Table -> Bool -- descobre se já foi solucionado, i.e., todas as células foram fixadas
 isSolved table = [] == filter (not.isFixed) (concat table)
--- Falta fazer o IO agora, pra podermos começar a testar se deu certo.
--- Podemos começar a pensar no 3D também
