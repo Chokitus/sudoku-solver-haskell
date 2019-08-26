@@ -20,20 +20,23 @@ solveSudoku = do
           isConfigValid [m,' ','x',' ', n] = isDigit m && isDigit n
           isConfigValid _                  = False
           parseConfig [m,' ','x',' ', n] = (read [m] :: Integer, read [n] :: Integer)
+          parseConfig _                  = error "?"
           isSudokuValid len wid s = length (words s) == (len*wid)**2 && all (\x -> let x' = read x in x>0 && x<=(len*wid)) (words s)
           printSolved solved = -- imprime resolvido (PRECISO DE VOCÊ NESSE)
 
 solveFile :: IO ()
 solveFile = do
     config <- waitForAnswer "Insira as dimensões do quadrado interno e quantos sudokus possui o arquivo" isConfigValid "Use o formato \"m x n, x\""
-    let config' = parseConfig config
-    file <- waitForAnswer "Insira o nome do arquivo" isFileValid "Arquivo inválido ou inexistente"
-    (\(len,wid,num) -> testTime num len wid file) config'
+    let (len,wid,num) = parseConfig config
+    file <- waitForAnswer "Insira o nome do arquivo" (isFileValid len wid) "Arquivo inválido ou inexistente"
+    testTime num len wid file
     main -- chama main para voltar pro menu
       where
-        isConfigValid = -- está no formato "m x n, x" ?
-        parseConfig config = -- transforma "m x n, x" em (m, n, x)
-        isSudokuValid config =  -- sei lá oq faríamos aqui (PRECISO DE VOCÊ NESSE)
+        isConfigValid m:' ':'x':' ':n:',':' ':x = isDigit m && isDigit n && all isDigit x
+        isConfigValid _                         = False
+        parseConfig [m,' ','x',' ', n, ',', ' ', x] = (read [m] :: Integer, read [n] :: Integer, read [m] :: Integer)
+        parseConfig _                               = error "?"
+        isFileValid len wid s =  -- sei lá oq faríamos aqui (PRECISO DE VOCÊ NESSE)
 
 waitForAnswer :: String -> (String -> Bool) -> String -> IO String
 waitForAnswer question verify reject = do
