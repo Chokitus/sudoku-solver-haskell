@@ -11,16 +11,17 @@ main = do
 solveSudoku :: IO ()
 solveSudoku = do
     config <- waitForAnswer "Insira as dimensões do quadrado interno" isConfigValid "Use o formato \"m x n\""
-    let config' = parseConfig config
-    sudoku <- waitForAnswer "Insira um stringdoku com espaços" (isSudokuValid config') "Tente novamente"
-    let solved <- uncurry (solve sudoku) config'
+    let (len, wid) = parseConfig config
+    sudoku <- waitForAnswer "Insira um stringdoku com espaços" (isSudokuValid len wid) "Tente novamente"
+    let solved <- solve sudoku len wid
     printSolved solved
     main -- chama main para voltar pro menu
       where
-          isConfigValid = -- está no formato "m x n" ?
-          parseConfig config = -- transforma "m x n" em (m, n)
-          isSudokuValid config =  -- possui m*n entradas ? Todas as entradas estão entre 1 e m*n ?
-          printSolved solved = -- imprime resolvido
+          isConfigValid [m,' ','x',' ', n] = isDigit m && isDigit n
+          isConfigValid _                  = False
+          parseConfig [m,' ','x',' ', n] = (read [m] :: Integer, read [n] :: Integer)
+          isSudokuValid len wid s = length (words s) == (len*wid)**2 && all (\x -> let x' = read x in x>0 && x<=(len*wid)) (words s)
+          printSolved solved = -- imprime resolvido (PRECISO DE VOCÊ NESSE)
 
 solveFile :: IO ()
 solveFile = do
@@ -32,7 +33,7 @@ solveFile = do
       where
         isConfigValid = -- está no formato "m x n, x" ?
         parseConfig config = -- transforma "m x n, x" em (m, n, x)
-        isSudokuValid config =  -- sei lá oq faríamos aqui
+        isSudokuValid config =  -- sei lá oq faríamos aqui (PRECISO DE VOCÊ NESSE)
 
 waitForAnswer :: String -> (String -> Bool) -> String -> IO String
 waitForAnswer question verify reject = do
