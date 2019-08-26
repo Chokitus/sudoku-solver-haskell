@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/bin"
-libdir     = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/lib/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0-Grwe0TSt85KCx990v2mwWc"
+libdir     = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/lib/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0-VRXP3j3URkEQSeZYIQ08V"
 dynlibdir  = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/lib/x86_64-linux-ghc-8.6.5"
 datadir    = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/share/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
 libexecdir = "/home/victor/Desktop/dev/Haskell/sudoku-solver-haskell/Sudoku/.stack-work/install/x86_64-linux/f9061772f54cd60894c5a4834e46d9c340839560f355109b8d03b07733ec6896/8.6.5/libexec/x86_64-linux-ghc-8.6.5/Sudoku-0.1.0.0"
